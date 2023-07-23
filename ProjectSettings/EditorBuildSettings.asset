@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/ParkingOrderGame/Scenea/ParkingOrder.unity
+    guid: 4b3358527c2dac242a2d6a5cd6e00487
   m_configObjects: {}
