@@ -17,8 +17,7 @@ namespace YugantLibrary.ParkingOrderGame
         public bool IsCarAtTarget { get; private set; }
 
         public Action OnCarStartMovingEvent, OnDesinationReachedEvent, OnStartReachedEvent;
-        public Action<CarController, Vector3> OnCarCrashEvent;
-
+        public Action<Vector3,GameObject> OnCarCrashEvent;
         public bool isCarCrashed { get; private set; }
 
 
@@ -188,16 +187,15 @@ namespace YugantLibrary.ParkingOrderGame
             IsCarMoving = false;
         }
 
-        void OnCarCrash(CarController collidedCarController, Vector3 forceDirection)
+        void OnCarCrash(Vector3 forceDirection, GameObject collidedObj = null)
         {
             Debug.Log("Car Crashed !");
-
             IsCarMoving = false;
             InputHandler.Instance.canClick = false;
             Transform particleContainer = GameController.Instance.GetParticleEffectContainer();
             ParticleSystem particleSystem = GameController.Instance.GetCarCrashParticleEffect();
             ParticleSystem carCrashEffect = Instantiate(particleSystem, particleContainer);
-            Vector3 particlePos = this.transform.position + (collidedCarController.transform.position - this.transform.position) / 2;
+            Vector3 particlePos = this.transform.position + (collidedObj.transform.position - this.transform.position) / 2;
             carCrashEffect.transform.position = particlePos;
 
             UI_Handler.Instance.ShakeCamera();
@@ -210,12 +208,10 @@ namespace YugantLibrary.ParkingOrderGame
         {
             GameObject collidedGameObj = collision.gameObject;
             Debug.Log("Collsion Detected -- " + collidedGameObj);
-            CarController carController = collidedGameObj.GetComponentInParent<CarController>();
-            Debug.Log("carController : " + carController);
             Debug.Log("Collision Relative Force : " + collision.relativeVelocity.magnitude);
             Vector3 directionOfCollision = collision.GetContact(0).normal;
             Debug.Log("directionOfCollision : " + directionOfCollision);
-            OnCarCrashEvent?.Invoke(carController, directionOfCollision);
+            OnCarCrashEvent?.Invoke(directionOfCollision, collidedGameObj);
         }
 
         IEnumerator LevelFail()

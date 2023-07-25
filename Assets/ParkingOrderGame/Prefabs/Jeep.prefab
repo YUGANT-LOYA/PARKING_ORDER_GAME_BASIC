@@ -409,7 +409,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   layerMaskForCollisionDetection:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 264
   CollisionEnterWithReferenceEvent:
     m_PersistentCalls:
       m_Calls:
